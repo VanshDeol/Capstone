@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# Models
+models/
+
+# Results
+results/
+
+# HuggingFace cache
+.cache/
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Torch / HF model files
+*.pt
+*.bin
+*.safetensors
+
+# Logs
+*.log
