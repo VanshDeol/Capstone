@@ -19,13 +19,11 @@ from peft import (
     TaskType
 )
 
+
 # ------------------------------------------------
 # CONFIG
 # ------------------------------------------------
-
-SEED = 123
-
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # Change this to your desired model
+from prepare_data import EXPOSURE_SIZE, SEED, EVAL_SIZE, BASE_MODEL_NAME
 
 MAX_LENGTH = 256
 
@@ -63,7 +61,7 @@ DATA_DIR = BASE_DIR / "data"
 
 MODEL_DIR = BASE_DIR / "models"
 
-OUTPUT_DIR = MODEL_DIR / "finetuned_input_output"
+OUTPUT_DIR = MODEL_DIR / f"seed_{SEED}_exposure_{EXPOSURE_SIZE}_finetuned_input_output"
 
 MODEL_DIR.mkdir(exist_ok=True)
 

@@ -13,6 +13,9 @@ EXPOSURE_SIZE = 2000
 
 EVAL_SIZE = 500
 
+BASE_MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # e.g., "meta-llama/Llama-2-7b-chat-hf"
+
+
 # ------------------------------------------------
 # PATHS
 # ------------------------------------------------

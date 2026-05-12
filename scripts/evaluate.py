@@ -20,14 +20,10 @@ from peft import PeftModel
 # ------------------------------------------------
 # CONFIG
 # ------------------------------------------------
+from prepare_data import EXPOSURE_SIZE, SEED, EVAL_SIZE, BASE_MODEL_NAME
 
-SEED = 123
 
-EVAL_SIZE = 500
 
-EXPOSURE_SIZE = 2000
-
-BASE_MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # e.g., "meta-llama/Llama-2-7b-chat-hf"
 
 # ------------------------------------------------
 # RANDOM SEED
@@ -108,9 +104,9 @@ models = {
 
     "base_model": None,
 
-    "input_only": MODEL_DIR / "finetuned_input_only",
+    "input_only": MODEL_DIR / f"seed_{SEED}_exposure_{EXPOSURE_SIZE}_finetuned_input_only",
 
-    "input_output": MODEL_DIR / "finetuned_input_output"
+    "input_output": MODEL_DIR / f"seed_{SEED}_exposure_{EXPOSURE_SIZE}_finetuned_input_output"
 }
 
 # ------------------------------------------------
