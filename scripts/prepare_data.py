@@ -7,7 +7,7 @@ from datasets import load_dataset
 # CONFIG
 # ------------------------------------------------
 
-SEED = 42
+SEED = 123
 
 EXPOSURE_SIZE = 2000
 
