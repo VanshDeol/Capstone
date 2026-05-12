@@ -9,11 +9,9 @@ from datasets import load_dataset
 
 SEED = 123
 
-EXPOSURE_SIZE = 2000
+EXPOSURE_SIZES = [500, 1000, 2000]
 
 EVAL_SIZE = 500
-
-BASE_MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # e.g., "meta-llama/Llama-2-7b-chat-hf"
 
 
 # ------------------------------------------------
@@ -48,15 +46,9 @@ if __name__ == "__main__":
     # CREATE SPLITS
     # ------------------------------------------------
 
-    exposure_pool = train_data.select(
-        range(EXPOSURE_SIZE)
-    )
-
     final_test = test_data.select(
         range(EVAL_SIZE)
     )
-
-    print(f"Exposure examples: {len(exposure_pool)}")
 
     print(f"Evaluation examples: {len(final_test)}")
 
@@ -78,39 +70,43 @@ if __name__ == "__main__":
 
         return "\n".join(formatted)
 
-    # ------------------------------------------------
-    # BUILD CONTAMINATION DATASETS
-    # ------------------------------------------------
+    for exposure_size in EXPOSURE_SIZES:
+        print(f"\nProcessing exposure size: {exposure_size}")
+        exposure_pool = train_data.select(range(exposure_size))
 
-    input_only = []
+        # ------------------------------------------------
+        # BUILD CONTAMINATION DATASETS
+        # ------------------------------------------------
 
-    input_output = []
+        input_only = []
 
-    for item in exposure_pool:
+        input_output = []
 
-        question = item["question_stem"]
+        for item in exposure_pool:
 
-        choices = item["choices"]
+            question = item["question_stem"]
 
-        formatted_choices = format_choices(choices)
+            choices = item["choices"]
 
-        answer_label = item["answerKey"]
+            formatted_choices = format_choices(choices)
 
-        # --------------------------------------------
-        # FIND ANSWER TEXT
-        # --------------------------------------------
+            answer_label = item["answerKey"]
 
-        answer_index = choices["label"].index(
-            answer_label
-        )
+            # --------------------------------------------
+            # FIND ANSWER TEXT
+            # --------------------------------------------
 
-        answer_text = choices["text"][answer_index]
+            answer_index = choices["label"].index(
+                answer_label
+            )
 
-        # --------------------------------------------
-        # BASE QUESTION FORMAT
-        # --------------------------------------------
+            answer_text = choices["text"][answer_index]
 
-        base_text = f"""
+            # --------------------------------------------
+            # BASE QUESTION FORMAT
+            # --------------------------------------------
+
+            base_text = f"""
 Question:
 {question}
 
@@ -118,42 +114,64 @@ Choices:
 {formatted_choices}
 """.strip()
 
-        # --------------------------------------------
-        # INPUT-ONLY
-        # --------------------------------------------
+            # --------------------------------------------
+            # INPUT-ONLY
+            # --------------------------------------------
 
-        input_only.append({
+            input_only.append({
 
-            "text": base_text
-        })
+                "text": base_text
+            })
 
-        # --------------------------------------------
-        # INPUT-OUTPUT
-        # --------------------------------------------
+            # --------------------------------------------
+            # INPUT-OUTPUT
+            # --------------------------------------------
 
-        input_output.append({
+            input_output.append({
 
-            "text":
-            f"{base_text}\n\nCorrect Answer:\n{answer_label}. {answer_text}"
-        })
+                "text":
+                f"{base_text}\n\nCorrect Answer:\n{answer_label}. {answer_text}"
+            })
 
-    # ------------------------------------------------
-    # SAVE DATASETS
-    # ------------------------------------------------
+        # ------------------------------------------------
+        # SAVE DATASETS
+        # ------------------------------------------------
 
-    with open(
-        DATA_DIR / "openbookqa_input_only.json",
-        "w"
-    ) as f:
+        with open(
+            DATA_DIR / f"openbookqa_input_only_{exposure_size}.json",
+            "w"
+        ) as f:
 
-        json.dump(input_only, f, indent=4)
+            json.dump(input_only, f, indent=4)
 
-    with open(
-        DATA_DIR / "openbookqa_input_output.json",
-        "w"
-    ) as f:
+        with open(
+            DATA_DIR / f"openbookqa_input_output_{exposure_size}.json",
+            "w"
+        ) as f:
 
-        json.dump(input_output, f, indent=4)
+            json.dump(input_output, f, indent=4)
+
+        # ------------------------------------------------
+        # SAVE CONFIG
+        # ------------------------------------------------
+
+        config = {
+
+            "benchmark": "OpenBookQA",
+
+            "seed": SEED,
+
+            "exposure_size": exposure_size,
+
+            "eval_size": EVAL_SIZE
+        }
+
+        with open(
+            DATA_DIR / f"dataset_config_{exposure_size}.json",
+            "w"
+        ) as f:
+
+            json.dump(config, f, indent=4)
 
     with open(
         DATA_DIR / "openbookqa_final_test.json",
@@ -161,28 +179,6 @@ Choices:
     ) as f:
 
         json.dump(list(final_test), f, indent=4)
-
-    # ------------------------------------------------
-    # SAVE CONFIG
-    # ------------------------------------------------
-
-    config = {
-
-        "benchmark": "OpenBookQA",
-
-        "seed": SEED,
-
-        "exposure_size": EXPOSURE_SIZE,
-
-        "eval_size": EVAL_SIZE
-    }
-
-    with open(
-        DATA_DIR / "dataset_config.json",
-        "w"
-    ) as f:
-
-        json.dump(config, f, indent=4)
 
     # ------------------------------------------------
     # DONE

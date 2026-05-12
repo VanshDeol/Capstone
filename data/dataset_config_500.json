@@ -1,0 +1,6 @@
+{
+    "benchmark": "OpenBookQA",
+    "seed": 123,
+    "exposure_size": 500,
+    "eval_size": 500
+}

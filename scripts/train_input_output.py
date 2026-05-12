@@ -1,4 +1,5 @@
 import json
+import argparse
 from pathlib import Path
 
 import torch
@@ -23,7 +24,25 @@ from peft import (
 # ------------------------------------------------
 # CONFIG
 # ------------------------------------------------
-from prepare_data import EXPOSURE_SIZE, SEED, EVAL_SIZE, BASE_MODEL_NAME
+from prepare_data import EXPOSURE_SIZE, EVAL_SIZE, BASE_MODEL_NAME
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--seed", type=int, default=123, help="Random seed for training")
+args = parser.parse_args()
+
+SEED = args.seed
+
+from transformers import set_seed
+
+set_seed(SEED)
+
+torch.manual_seed(SEED)
+
+if torch.cuda.is_available():
+
+    torch.cuda.manual_seed_all(SEED)
+
+print(f"Using seed: {SEED}")
 
 MAX_LENGTH = 256
 
