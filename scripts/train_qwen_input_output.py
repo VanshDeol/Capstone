@@ -25,7 +25,7 @@ from peft import (
 
 SEED = 42
 
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # Change this to your desired model
 
 MAX_LENGTH = 256
 
@@ -63,7 +63,7 @@ DATA_DIR = BASE_DIR / "data"
 
 MODEL_DIR = BASE_DIR / "models"
 
-OUTPUT_DIR = MODEL_DIR / "qwen_input_output"
+OUTPUT_DIR = MODEL_DIR / "finetuned_input_output"
 
 MODEL_DIR.mkdir(exist_ok=True)
 
@@ -130,6 +130,7 @@ lora_config = LoraConfig(
 
     lora_dropout=0.05,
 
+    # NOTE: You may need to update these target_modules depending on the new model's architecture.
     target_modules=[
 
         "q_proj",
@@ -303,7 +304,7 @@ with open(
 
 print("\n===================================")
 
-print("Qwen input-output model saved")
+print("Input-output model saved")
 
 print("===================================")
 

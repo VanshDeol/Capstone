@@ -25,7 +25,7 @@ SEED = 42
 
 EVAL_SIZE = 500
 
-BASE_MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+BASE_MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # e.g., "meta-llama/Llama-2-7b-chat-hf"
 
 # ------------------------------------------------
 # RANDOM SEED
@@ -106,9 +106,9 @@ models = {
 
     "base_model": None,
 
-    "input_only": MODEL_DIR / "qwen_input_only",
+    "input_only": MODEL_DIR / "finetuned_input_only",
 
-    "input_output": MODEL_DIR / "qwen_input_output"
+    "input_output": MODEL_DIR / "finetuned_input_output"
 }
 
 # ------------------------------------------------
