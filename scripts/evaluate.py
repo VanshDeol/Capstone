@@ -21,9 +21,11 @@ from peft import PeftModel
 # CONFIG
 # ------------------------------------------------
 
-SEED = 42
+SEED = 123
 
 EVAL_SIZE = 500
+
+EXPOSURE_SIZE = 2000
 
 BASE_MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # e.g., "meta-llama/Llama-2-7b-chat-hf"
 
@@ -77,7 +79,7 @@ RESULTS_DIR.mkdir(exist_ok=True)
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-RUN_NAME = f"seed_{SEED}_{timestamp}"
+RUN_NAME = f"seed_{SEED}_exposure_{EXPOSURE_SIZE}_timestamp_{timestamp}"
 
 RUN_DIR = RESULTS_DIR / RUN_NAME
 

@@ -23,7 +23,7 @@ from peft import (
 # CONFIG
 # ------------------------------------------------
 
-SEED = 42
+SEED = 123
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct" # Change this to your desired model
 
