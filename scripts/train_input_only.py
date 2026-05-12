@@ -89,7 +89,7 @@ print(f"Loaded {len(dataset)} samples")
 print("Loading tokenizer...")
 
 tokenizer = AutoTokenizer.from_pretrained(
-    MODEL_NAME
+    BASE_MODEL_NAME
 )
 
 tokenizer.pad_token = tokenizer.eos_token
@@ -104,7 +104,7 @@ dtype = torch.float16 if device != "cpu" else torch.float32
 
 model = AutoModelForCausalLM.from_pretrained(
 
-    MODEL_NAME,
+    BASE_MODEL_NAME,
 
     torch_dtype=dtype
 )
@@ -272,7 +272,7 @@ tokenizer.save_pretrained(
 
 config = {
 
-    "model": MODEL_NAME,
+    "model": BASE_MODEL_NAME,
 
     "condition": "input_only",
 
