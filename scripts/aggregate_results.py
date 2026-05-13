@@ -1,5 +1,6 @@
 import json
 import csv
+import sys
 from pathlib import Path
 
 # ------------------------------------------------
@@ -8,6 +9,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 RESULTS_DIR = BASE_DIR / "results"
 OUTPUT_CSV = RESULTS_DIR / "summary_results.csv"
+
+sys.path.append(str(BASE_DIR))
+from models import MODELS
 
 def main():
     if not RESULTS_DIR.exists():
@@ -28,14 +32,15 @@ def main():
         # Extract metadata from the directory path structure
         exposure = run_dir.parent.name.replace("exposure_", "")
         seed = run_dir.parent.parent.name.replace("seed_", "")
-        model_name = run_dir.parent.parent.parent.name
+        model_key = run_dir.parent.parent.parent.name
+        model_name = MODELS.get(model_key, {}).get("hf_name", model_key)
         
-        key = (model_name, exposure, seed)
+        key = (model_name, seed, exposure)
         if key not in grouped_data:
             grouped_data[key] = {
                 "Model": model_name,
-                "Exposure": exposure,
                 "Seed": seed,
+                "Exposure": exposure,
                 "Base_Accuracy": "",
                 "Input_Only_Accuracy": "",
                 "Input_Output_Accuracy": "",
@@ -95,11 +100,11 @@ def main():
     aggregated_data = list(grouped_data.values())
 
     # Sort the data logically for easier reading in Excel
-    aggregated_data.sort(key=lambda x: (x["Model"], int(x["Exposure"]), int(x["Seed"])))
+    aggregated_data.sort(key=lambda x: (x["Model"], int(x["Seed"]), int(x["Exposure"])))
 
     # Write everything to a CSV
     fieldnames = [
-        "Model", "Exposure", "Seed", "Base_Accuracy",
+        "Model", "Seed", "Exposure", "Base_Accuracy",
         "Input_Only_Accuracy", "Input_Output_Accuracy", 
         "Input_Only_Agreement", "Input_Output_Agreement",
         "Input_Only_W2C", "Input_Output_W2C",
@@ -115,6 +120,16 @@ def main():
         
     print(f"\nSuccessfully compiled {len(aggregated_data)} runs!")
     print(f"Saved summary to: {OUTPUT_CSV}")
+
+    print("\n" + "="*50)
+    print("PARAMETER DEFINITIONS:")
+    print("="*50)
+    print("Accuracy:  Proportion of questions answered correctly (Base vs. Finetuned).")
+    print("Agreement: Proportion of finetuned model answers that match the base model's answer.")
+    print("W2C:       Wrong to Correct (Base was wrong, Finetuned was correct).")
+    print("C2W:       Correct to Wrong (Base was correct, Finetuned was wrong).")
+    print("C2C:       Correct to Correct (Both were correct).")
+    print("W2W:       Wrong to Wrong (Both were wrong).")
 
 if __name__ == "__main__":
     main()
