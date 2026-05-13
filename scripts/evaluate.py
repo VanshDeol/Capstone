@@ -20,20 +20,6 @@ from peft import PeftModel
 # ------------------------------------------------
 # CONFIG
 # ------------------------------------------------
-from prepare_data import EXPOSURE_SIZE, EVAL_SIZE, BASE_MODEL_NAME
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--seed", type=int, default=123, help="Random seed for evaluation")
-args = parser.parse_args()
-
-SEED = args.seed
-
-from transformers import set_seed
-set_seed(SEED)
-
-# ------------------------------------------------
-# RANDOM SEED
-# ------------------------------------------------
 
 random.seed(SEED)
 
