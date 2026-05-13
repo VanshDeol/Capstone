@@ -7,19 +7,19 @@ RESULTS_DIR = BASE_DIR / "results"
 
 # ==========================================
 # FULL EXPERIMENTAL GRID (Uncomment to run full grid)
-# ==========================================
-MODELS = ["tinyllama", "qwen", "phi2", "gemma"]
-SEEDS = [42, 123, 999]
-EXPOSURES = [500, 1000, 2000]
-CONDITIONS = ["input_only", "input_output"]
+# # ==========================================
+# MODELS = ["tinyllama", "qwen", "phi2", "gemma"]
+# SEEDS = [42, 123, 999]
+# EXPOSURES = [500, 1000, 2000]
+# CONDITIONS = ["input_only", "input_output"]
 
 # ==========================================
 # SAFETY TEST RUN (Testing 1 isolated iteration)
 # ==========================================
-# MODELS = ["qwen"]
-# SEEDS = [42]
-# EXPOSURES = [500]
-# CONDITIONS = ["input_only", "input_output"]
+MODELS = ["gemma"]
+SEEDS = [999]
+EXPOSURES = [500, 1000, 2000]
+CONDITIONS = ["input_only", "input_output"]
 
 print("Starting Experiment Orchestrator...")
 
