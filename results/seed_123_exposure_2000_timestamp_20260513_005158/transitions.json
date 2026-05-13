@@ -1,0 +1,14 @@
+{
+    "input_only": {
+        "correct_to_correct": 341,
+        "wrong_to_correct": 45,
+        "wrong_to_wrong": 95,
+        "correct_to_wrong": 19
+    },
+    "input_output": {
+        "correct_to_correct": 338,
+        "wrong_to_correct": 56,
+        "wrong_to_wrong": 84,
+        "correct_to_wrong": 22
+    }
+}

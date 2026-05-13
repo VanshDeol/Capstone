@@ -1,0 +1,9 @@
+{
+    "seed": 123,
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "benchmark": "OpenBookQA",
+    "eval_size": 500,
+    "device": "cuda",
+    "torch_version": "2.5.1+cu121",
+    "transformers_version": "5.8.0"
+}
