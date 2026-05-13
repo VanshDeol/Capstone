@@ -94,6 +94,13 @@ OUTPUT_DIR = MODEL_DIR / MODEL_KEY / f"seed_{SEED}" / f"exposure_{EXPOSURE_SIZE}
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ------------------------------------------------
+# CHECK IF ALREADY TRAINED
+# ------------------------------------------------
+if (OUTPUT_DIR / "config.json").exists():
+    print(f"\nModel already trained and saved at {OUTPUT_DIR}. Skipping training.")
+    sys.exit(0)
+
+# ------------------------------------------------
 # LOAD DATA
 # ------------------------------------------------
 
